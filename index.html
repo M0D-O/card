@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البطاقة التعريفية | محمد أشرف</title>
+    <style>
+        :root {
+            --primary-color: #a855f7; /* اللون البنفسجي المضيء الجديد */
+            --bg-color: #000000; 
+            --glass-bg: rgba(0, 0, 0, 0.5); /* تقليل التعتيم لرؤية أفضل */
+            --glass-border: rgba(168, 85, 247, 0.3);
+            --text-color: #ffffff; 
+        }
+
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background: var(--bg-color); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            color: var(--text-color); 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            overflow-x: hidden; 
+            position: relative;
+        }
+
+        /* خلفية الفيديو المتحركة ملء الشاشة بجودة واضحة */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* طبقة تعتيم خفيفة جداً فقط لحماية وضوح نصوص الكارت دون إخفاء الفيديو */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* تم تقليل التعتيم لزيادة الوضوح */
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* شريط التمرير العلوي باللون البنفسجي */
+        .empire-ticker { 
+            background: rgba(168, 85, 247, 0.1); 
+            border-top: 1px solid var(--primary-color); 
+            border-bottom: 1px solid var(--primary-color); 
+            padding: 8px 0; 
+            margin-bottom: 20px; 
+            overflow: hidden; 
+            width: 100%; 
+            display: flex; 
+        }
+        
+        .ticker-wrap { display: flex; width: 100%; }
+        
+        .ticker-text { 
+            white-space: nowrap; 
+            padding-right: 50px; 
+            animation: marquee 12s linear infinite; 
+            color: var(--text-color); 
+            font-weight: bold; 
+            font-size: 13px; 
+        }
+        
+        @keyframes marquee { 
+            0% { transform: translate3d(0, 0, 0); } 
+            100% { transform: translate3d(-100%, 0, 0); } 
+        }
+
+        /* الكارت الرئيسي بدون تأثير الضبابية (Blur) المزعج */
+        .profile-container { 
+            position: relative;
+            z-index: 10;
+            width: 90%; 
+            max-width: 450px; 
+            background: var(--glass-bg); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 24px; 
+            padding: 25px 20px; 
+            /* تم حذف backdrop-filter المسبب للضبابية تماماً هنا */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8); 
+            text-align: center; 
+        }
+
+        /* إطار الصورة الشخصية باللون البنفسجي المضيء */
+        .avatar-wrapper { 
+            position: relative; 
+            width: 130px; 
+            height: 130px; 
+            margin: 0 auto 15px; 
+            border-radius: 50%; 
+            overflow: hidden; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 2px solid var(--primary-color); 
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+        }
+        
+        .avatar { width: 100%; height: 100%; object-fit: cover; }
+
+        .name { font-size: 24px; font-weight: bold; color: #fff; margin: 5px 0 0; }
+        .nickname { font-size: 16px; color: var(--primary-color); margin-bottom: 20px; font-weight: 600; }
+        
+        .section-title { font-size: 14px; color: #555; text-align: right; margin: 20px 10px 10px; border-bottom: 1px dashed #333; padding-bottom: 5px; }
+        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        
+        .info-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 14px; padding: 12px; text-align: right; }
+        .info-card label { display: block; font-size: 11px; color: #777; margin-bottom: 4px; }
+        .info-card span { font-size: 14px; font-weight: bold; color: #fff; }
+        
+        /* زر الإرسال البنفسجي بالكامل والكتابة عليه بيضاء */
+        .telegram-btn { 
+            display: block; 
+            background: var(--primary-color); 
+            color: #ffffff; 
+            text-decoration: none; 
+            padding: 14px; 
+            border-radius: 15px; 
+            font-weight: bold; 
+            margin-top: 25px; 
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.3);
+            transition: 0.3s;
+        }
+        
+        .telegram-btn:hover { 
+            transform: scale(1.02); 
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5); 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- فيديو الخلفية المتحرك فائق الوضوح -->
+    <video class="video-background" autoplay loop muted playsinline>
+        <source src="000.mp4" type="video/mp4">
+    </video>
+    
+    <!-- طبقة التعتيم الخفيفة المحمية -->
+    <div class="overlay"></div>
+
+    <div class="profile-container">
+        
+        <div class="empire-ticker">
+            <div class="ticker-wrap">
+                <div class="ticker-text">👑 البطاقة الشخصية لمحمد اشرف 👑 &nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div class="ticker-text">👑 البطاقة الشخصية لمحمد اشرف 👑 &nbsp;&nbsp;&nbsp;&nbsp;</div>
+            </div>
+        </div>
+        
+        <div class="avatar-wrapper">
+            <img src="1000522173_2.jpg" onerror="this.src='https://ui-avatars.com/api/?name=Mohamed+Ashraf&background=a855f7&color=fff&size=256'" class="avatar">
+        </div>
+
+        <div class="name">محمد أشرف</div>
+        <div class="nickname">@M0D_O</div>
+
+        <div class="section-title">البيانات</div>
+        <div class="info-grid">
+            <div class="info-card" style="grid-column: span 2; border-color: var(--primary-color);">
+                <label>المنصب</label>
+                <span style="color: var(--primary-color);">☕ مالك وحاكم إمبراطورية قهوة أنمي العظيمة</span>
+            </div>
+            <div class="info-card"><label>النمط</label><span>🎯 ESFP-A</span></div>
+            <div class="info-card"><label>اللقب</label><span>✨ MOD</span></div>
+            <div class="info-card"><label>العمر</label><span>🎂 21 سنة</span></div>
+            <div class="info-card"><label>البلد</label><span>🇪🇬 مصر</span></div>
+            <div class="info-card"><label>الهواية</label><span>⚽ كرة القدم</span></div>
+            <div class="info-card"><label>الطول</label><span>📏 175 cm</span></div>
+            <div class="info-card" style="grid-column: span 2;"><label>الوزن</label><span>⚖️ 64 kg</span></div>
+        </div>
+
+        <div class="section-title">الاهتمامات والمفضلات</div>
+        <div class="info-grid">
+            <div class="info-card"><label>الأنمي المفضل</label><span>🔍 المحقق كونان</span></div>
+            <div class="info-card"><label>الشخصية المفضلة</label><span>🔥 سون غوكو</span></div>
+            <div class="info-card"><label>الألوان المفضلة</label><span>🔴⚫ الأسود و الاحمر</span></div>
+            <div class="info-card"><label>الأكلة المفضلة</label><span>🍽️ أي شيء ما يكون غريب</span></div>
+            <div class="info-card" style="grid-column: span 2;"><label>القصة المفضلة</label><span>⚔️ هجوم العمالقة</span></div>
+        </div>
+
+        <a href="https://t.me/M0D_O" target="_blank" class="telegram-btn">
+            ارسل رسالة لعمك محمد ⚡
+        </a>
+
+    </div>
+
+</body>
+</html>
